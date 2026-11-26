@@ -15,17 +15,24 @@ ENTRY = "I'm sorry I told you the file was backed up, and by backed up I meant I
 MAX_CHARS = 200
 
 
-def check_gate(text):
-    """Return True when the text passes the competition gate."""
+def validate(text):
+    """Check every gate rule for the entry text; True means it passes."""
     if not isinstance(text, str):
         return False
-    if not 1 <= len(text) <= MAX_CHARS:
+    if len(text) < 1 or len(text) > MAX_CHARS:
         return False
-    if not text.strip():
+    if text.strip() == "":
         return False
-    if text.count(".") != 1 or not text.endswith("."):
+    if text.count(".") != 1:
+        return False
+    if not text.endswith("."):
         return False
     return True
+
+
+def check_gate(text):
+    """Gate entry point: delegate the real checks to validate()."""
+    return validate(text)
 
 
 def main():
